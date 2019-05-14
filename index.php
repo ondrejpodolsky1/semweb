@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html> 
     <head>
@@ -10,10 +11,20 @@
         <link rel="stylesheet" href="">
     </head>
     <body>
+    <!--
+        Výchozí stránka s rozcestníkem
+    -->
        <h1>
-       WELCOME TO MY PAGE, PLEASE CHOOSE WHAT YOU WANT TO DO NEXT.
-       GIT, PLS WORK NOW.
+       VÍTEJTE, VYBERTE CO CHCETE UDĚLAT<br>
        </h1>
+       <h3>
+       Pro plnohodnotné využívání aplikace doporučujeme se přihlásit, pokud u nás nemáte účet tak se zaregistrovat.
+       </h3>
+
+        
+        <a href="vypsat_filmy.php">Zobrazení představení</a>
+        <a href="prihlaseni.php">Přihlásit se </a>
+        <a href="registrace.php">Registrovat </a>
         
     </body>
 </html>
