@@ -1,7 +1,7 @@
 <?php
 require 'db.php';
 session_start();
-$_SESSION['normal-prihlasen'];
+
 ?>
 
 <!DOCTYPE html>
@@ -22,14 +22,15 @@ $_SESSION['normal-prihlasen'];
        VÍTEJTE, VYBERTE CO CHCETE UDĚLAT<br>
        </h1>
        
-        <?php if($_SESSION['normal-prihlasen']=='ano'){
+        <?php if(isset($_SESSION['normal-prihlasen'])){
             $id = $_SESSION['id_uziv'];
             $stmt = $db->prepare("SELECT * FROM uzivatel WHERE id=:id");
             $stmt->execute(['id' => $id]); 
             $data = $stmt->fetchAll();
             // and somewhere later:
             foreach ($data as $row) {
-                echo "Přihlášený uživatel :  ".$row['jmeno'];
+                echo "Přihlášený uživatel :  ".$row['jmeno']."<br>";
+                echo "<a href='odhlaseni.php'>odhlásit se</a>";
             }
             
            
