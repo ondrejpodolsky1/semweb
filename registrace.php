@@ -29,7 +29,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $stmt = $db->prepare("INSERT INTO uzivatel(jmeno, email, heslo) VALUES(?,?,?)");
         $stmt->execute(array($jmeno, $email, $hash));
 
-
+        
         $stmt = $db->prepare("SELECT id FROM uzivatel WHERE email = ? LIMIT 1");
         $stmt->execute(array($email));
         $id_uziv = (int)$stmt->fetchColumn();

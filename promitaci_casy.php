@@ -3,7 +3,7 @@ require 'db.php';
 $id_filmu =$_GET["id_filmu"];
 $sql = "SELECT * FROM promitani WHERE film_id=".$id_filmu."";
 $vypis = $db->query($sql);
-var_dump($id_filmu);
+
 
 ?>
 <!DOCTYPE html>
@@ -17,9 +17,10 @@ var_dump($id_filmu);
 <body>
 <?php
     if ($vypis->rowCount()> 0) {
-        echo "<table><tr><th>Čas představení</th></tr>";
+        echo "<table><tr><th>Datum představení</th><th>Čas představení</th></tr>";
         while($data = $vypis->fetch( PDO::FETCH_ASSOC )) {
         echo "<tr>
+                <td>".$data['datum']."</td>
                 <td>".$data['cas']."</td>
                 <td><form action='rezervace.php' method='post/get'>
                 <input type='hidden' name='id_filmu' id='id_promitani' value='".$data['id']."' />

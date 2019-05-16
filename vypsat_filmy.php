@@ -32,7 +32,7 @@ $vypis = $db->query($sql);
     }
     echo "</table>";
     ?>
-    <a href="zalozit_film.php">Založit nový film</a><br><br>
+    <a href="pridani_promitani.php">Přidání promítacího času</a><br><br>
     <a href="index.php">Zpět na index</a>
     </body>
 </html>
