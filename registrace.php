@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="password" name="heslo" style="width:350px" id="heslo" class="form-control" value=""><br /><br />
 
 
-                    <input type="submit" class="btn-info" value="Vytvořit účet"> nebo <a href="https://eso.vse.cz/~podo01/sem/index.php">Zrušit</a>
+                    <input type="submit" class="btn-success" value="Vytvořit účet"> nebo <a href="index.php">Zrušit</a>
             </div>
         </div>
     </div>

@@ -1,5 +1,4 @@
 <?php
-
 require 'db.php';
 require_once 'config.php';
 $loginURL= $gClient->createAuthUrl();
@@ -26,10 +25,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['id_uziv'] = $prihlaseny['id'];
         $_SESSION['normal-prihlasen'] = 'ano';
         $_SESSION['admin'] = 'ne';
-
+        $_SESSION['glogin']='ne';
         if($prihlaseny["id"]==1){
             $_SESSION['admin'] = 'ano';
             $_SESSION['normal-prihlasen'] = 'ne';
+            $_SESSION['glogin']='ne';
         }
         header('Location: index.php');
     } else {

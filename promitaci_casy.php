@@ -5,7 +5,12 @@ $id_filmu =$_GET["id_filmu"];
 $sql = "SELECT * FROM promitani WHERE film_id=".$id_filmu."";
 $vypis = $db->query($sql);
 
-
+if ($_SESSION['normal-prihlasen'] == 'ano' || $_SESSION['admin'] == 'ano' || $_SESSION['glogin'] == 'ano') {
+    
+} else {
+    header('Location: prihlaseni.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
