@@ -80,15 +80,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                     <input type="submit" class="btn-success" value="Vytvořit účet"> nebo <a href="index.php">Zrušit</a>
+                    </form>
+                    <?php
+                    if (!empty($chyby)) {
+                        echo '<div class="error">' . $chyby . '</div>';
+                    }
+                    ?>
             </div>
         </div>
     </div>
-    </form>
-    <?php
-    if (!empty($chyby)) {
-        echo '<div class="error">' . $chyby . '</div>';
-    }
-    ?>
+   
+
 
 </body>
 

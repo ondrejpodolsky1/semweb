@@ -13,8 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $film_id = $_POST['filmy_sel'];
   $datum = $_POST['Datum'];
   $chyby = "";
-
-
   if (!empty($_POST)) {
     if ($_POST['cas'] == "0") {
       $chyby .= 'Vyberte čas promítání!<br>';
@@ -25,8 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST['Datum'])) {
       $chyby .= 'Vyberte datum promítání!<br>';
     }
-
-
+  }if(empty($chyby)){
     $stmt = $db->prepare("INSERT INTO promitani(datum, cas, film_id) VALUES(?,?,?)");
     $stmt->execute(array($datum, $cas, $film_id));
 
@@ -35,7 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_promitani = (int)$stmt->fetchColumn();
 
     $_SESSION['id_promitani'] = $id_promitani;
+    header('Location: vypsat_filmy.php');
   }
+ 
+  
 }
 ?>
 <!DOCTYPE html>
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
 
       $('#Datum').datepicker({
-        dateFormat: 'yy-mm-dd'
+        dateFormat: 'yy-mm-dd';
         /*
           onSelect: function(datText, prom) {
               //Dostane dnešní datum - půlnoc (dnes)
@@ -75,42 +75,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-  <div class="container" style="margin-top: 50px">
-    <form method="post">
+  <div class="container" style="margin-top: 100px">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-offset-3" align="center">
+        <form method="post">
 
-      <label for="film">Film:</label>
-      <select name="filmy_sel" class="form-control" id="filmy_sel" style="width:200px">
+          <label for="film">Film:</label>
+          <select name="filmy_sel" class="form-control" id="filmy_sel" style="width:200px">
+            <?php
+            echo $filmy_op;
+            ?>
+          </select><br><br>
+
+
+          <label for="datum">Datum:</label>
+          <input class="form-control" type="text" name="Datum" id="Datum" style="width:200px"><br><br>
+
+
+          <label for="cas">Čas:</label>
+          <select name="cas" id="cas" class="form-control" style="width:200px">
+            <option selected='selected' value='0'>Vyberte čas</option>
+            <option value='10'>10:00</option>
+            <option value='13'>13:00</option>
+            <option value='16'>16:00</option>
+            <option value='19'>19:00</option>
+            <option value='22'>22:00</option>
+          </select><br><br>
+
+
+          <input type="submit" value="Přidat čas promítání"> nebo <a href="vypsat_filmy.php">Zrušit</a>
+        </form>
+
         <?php
-        echo $filmy_op;
+        if (!empty($chyby)) {
+          echo '<div class="error">' . $chyby . '</div>';
+        }
         ?>
-      </select><br><br>
-
-
-      <label for="datum">Datum:</label>
-      <input class="form-control" type="text" name="Datum" id="Datum" style="width:200px"><br><br>
-
-
-      <label for="cas">Čas:</label>
-      <select name="cas" id="cas" class="form-control" style="width:200px">
-        <option selected='selected' value='0'>Vyberte čas</option>
-        <option value='10'>10:00</option>
-        <option value='13'>13:00</option>
-        <option value='16'>16:00</option>
-        <option value='19'>19:00</option>
-        <option value='22'>22:00</option>
-      </select><br><br>
-      
-      
-      <input type="submit" value="Přidat čas promítání"> nebo <a href="vypsat_filmy.php">Zrušit</a>
-    </form>
-
-    <?php
-    if (!empty($chyby)) {
-      echo '<div class="error">' . $chyby . '</div>';
-    }
-    ?>
-
-    <a href="index.php">Zpět na index</a>
+        <br>
+        <a href="index.php">Zpět na index</a>
+      </div>
+    </div>
   </div>
 </body>
 

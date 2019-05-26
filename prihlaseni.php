@@ -17,21 +17,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $chyby .= 'Zadejte dostatečně dlouhé heslo.<br>';
         }
     }
-    $stmt = $db->prepare("SELECT * FROM uzivatel WHERE email = ? LIMIT 1");
-    $stmt->execute(array($email));
-    $prihlaseny = @$stmt->fetchAll()[0];
-
-    if (password_verify($heslo, $prihlaseny["heslo"])) {
-        $_SESSION['id_uziv'] = $prihlaseny['id'];
-        $_SESSION['normal-prihlasen'] = 'ano';
-        $_SESSION['admin'] = 'ne';
-        $_SESSION['glogin']='ne';
-        if($prihlaseny["id"]==1){
-            $_SESSION['admin'] = 'ano';
-            $_SESSION['normal-prihlasen'] = 'ne';
+    if(empty($chyby)){
+        $stmt = $db->prepare("SELECT * FROM uzivatel WHERE email = ? LIMIT 1");
+        $stmt->execute(array($email));
+        $prihlaseny = @$stmt->fetchAll()[0];
+    
+        if (password_verify($heslo, $prihlaseny["heslo"])) {
+            $_SESSION['id_uziv'] = $prihlaseny['id'];
+            $_SESSION['normal-prihlasen'] = 'ano';
+            $_SESSION['admin'] = 'ne';
             $_SESSION['glogin']='ne';
-        }
-        header('Location: index.php');
+            if($prihlaseny["id"]==1){
+                $_SESSION['admin'] = 'ano';
+                $_SESSION['normal-prihlasen'] = 'ne';
+                $_SESSION['glogin']='ne';
+            }
+            header('Location: vypsat_filmy.php');
+    }
+    
     } else {
         $chyby .= "Nelze se přihlásit, zadejte znovu svoje přihlašovací údaje. Nemáte-li účet <a href='registrace.php'>zaregistrujte se</a>";
     }

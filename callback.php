@@ -18,9 +18,9 @@ $_SESSION['email'] = $userData['email'];
 $_SESSION['normal-prihlasen'] = 'ano';
 $_SESSION['admin'] = 'ne';
 $_SESSION['glogin'] = 'ano';
-
+$_SESSION['id_uziv']= $userData['id'];
 $_SESSION['gprijmeni'] = $userData['familyName'];
 $_SESSION['gjmeno'] = $userData['givenName'];
-header('Location: index.php');
+header('Location: vypsat_filmy.php');
 exit();
 ?>

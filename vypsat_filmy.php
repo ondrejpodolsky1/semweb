@@ -17,13 +17,15 @@ $vypis = $db->query($sql);
 </head>
 
 <body>
-<div class="container" style="margin-top: 50px">
-    <?php
-    if ($vypis->rowCount() > 0) {
-        echo "<table><tr><th>Název filmu</th><th>Délka filmu</th><th>Promítací časy</th></tr>";
-        while ($data = $vypis->fetch(PDO::FETCH_ASSOC)) {
-            //todo - podmínka přihlášení pro tlačítko na zobrazení časů promítání
-            echo "<tr>
+    <div class="container" style="margin-top: 100px">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-offset-3" align="center">
+                <?php
+                if ($vypis->rowCount() > 0) {
+                    echo "<table><tr><th>Název filmu</th><th>Délka filmu</th><th>Promítací časy</th></tr>";
+                    while ($data = $vypis->fetch(PDO::FETCH_ASSOC)) {
+                        //todo - podmínka přihlášení pro tlačítko na zobrazení časů promítání
+                        echo "<tr>
                 <td>" . $data['nazev'] . "</td>
                 <td>" . $data['delka_filmu'] . " min</td>
                 <td><form action='promitaci_casy.php' method='post/get'>
@@ -31,15 +33,18 @@ $vypis = $db->query($sql);
                 <input type='submit' value='Zobrazit'/>
                 </form></td>
               </tr>";
-        }
-    } else {
-        echo "Nenašlo to ani jeden řádek s Daty";
-    }
-    echo "</table>";
-    ?>
-    <br><br>
-    <a href="index.php">Zpět na index</a>
-</div>
+             
+                    }
+                } else {
+                    echo "Nenašlo to ani jeden řádek s Daty";
+                }
+                echo "</table>";
+                ?>
+                <br><br>
+                <a href="index.php">Zpět na index</a>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
