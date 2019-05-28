@@ -1,11 +1,14 @@
 <?php
 session_start();
 require 'db.php';
-$id_filmu = $_GET["id_filmu"];
-$sql = "SELECT * FROM promitani WHERE film_id=" . $id_filmu . "";
-$vypis = $db->query($sql);
 
-if ($_SESSION['normal-prihlasen'] == 'ano' || $_SESSION['admin'] == 'ano' || $_SESSION['glogin'] == 'ano') { } else {
+
+
+if ($_SESSION['normal-prihlasen'] == 'ano' || $_SESSION['admin'] == 'ano' || $_SESSION['glogin'] == 'ano') {
+    $id_filmu = $_GET["id_filmu"];
+    $sql = "SELECT * FROM promitani WHERE film_id=" . $id_filmu . "";
+    $vypis = $db->query($sql);
+ } else {
     header('Location: prihlaseni.php');
     exit();
 }
@@ -34,10 +37,13 @@ if ($_SESSION['normal-prihlasen'] == 'ano' || $_SESSION['admin'] == 'ano' || $_S
                 <td>" . $data['cas'] . "</td>
                 <td><form action='rezervace.php' method='post/get'>
                 <input type='hidden' name='id_promitani' id='id_promitani' value='" . $data['id'] . "' />
+                <input type='hidden' name='cas_promitani' id='cas_promitani' value='" . $data['cas'] . "' />
                 <input type='submit' value='Vytvořit rezervaci'/>
                 </form></td>
               </tr>";
               $_SESSION['id_promitani'] = $data['id'];
+              
+
                     }
                 } else {
                     echo "U Tohoto filmu není ani jeden promítací čas";

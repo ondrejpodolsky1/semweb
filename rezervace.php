@@ -1,7 +1,9 @@
 <?php
 require 'db.php';
 session_start();
-
+$_SESSION['cas_promitani'] = $_GET["cas_promitani"];
+$json_pryc = array();
+$id_rezervujici = array();
 $id_misto = 0;
 if ($_SESSION['normal-prihlasen'] == 'ano' || $_SESSION['admin'] == 'ano' || $_SESSION['glogin'] == 'ano') { } else {
     header('Location: prihlaseni.php');
@@ -16,9 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $chyby .= "Vyberte místa, která chcete rezervovat.";
         }
     }
-    if (isset($_POST['rezervovat'])) { //to run PHP script on submit
+    if (isset($_POST['rezervovat'])) {
         if (!empty($_POST['mista'])) {
-            // Loop to store and display values of individual checked checkbox.
             foreach ($_POST['mista'] as $vybrane) {
                 $vybrana_mista[] = $vybrane;
             }
@@ -27,27 +28,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(empty($chyby)){
         $id_uzivatel = $_SESSION['id_uziv'];
         $id_promitani = $_SESSION['id_promitani'];
+        $cas_promitani = $_SESSION['cas_promitani'];
         $mista = $vybrana_mista;
-        $mista_serializovana = serialize($mista);
-        $stmt = $db->prepare("INSERT INTO rezervace(id_uzivatel, id_promitani, mista) VALUES(?,?,?)");
-        $stmt->execute(array($id_uzivatel, $id_promitani, $mista_serializovana));
+        $mista_json = json_encode($mista);
+
+        $stmt = $db->prepare("INSERT INTO rezervace(id_uzivatel, id_promitani,cas_promitani, mista) VALUES(?,?,?,?)");
+        $stmt->execute(array($id_uzivatel, $id_promitani, $cas_promitani, $mista_json));    
+        
+           
+        
     }
+    
+    
 }
-
-/*
-$array = array("my", "litte", "array", 2);
-
-$serialized_array = serialize($array);
-$unserialized_array = unserialize($serialized_array);
-
-var_dump($serialized_array);// gives back a string, perfectly for db saving!
-var_dump($unserialized_array); // gives back the array again
-*/
+$sql = "SELECT * FROM rezervace WHERE id_promitani=".$_SESSION['id_promitani']." AND cas_promitani=".$_SESSION['cas_promitani']."";
+$vypis = $db->query($sql);
+    if ($vypis->rowCount() > 0) { 
+        while ($data = $vypis->fetch(PDO::FETCH_ASSOC)) {
+          $json_pryc = json_decode($data["mista"],true);
+          $id_rezervujici = $data["id_uzivatel"];
+        }
+    }
 
 
 
-//TODO - kontrola jestli film_id, které dostaneme z GET existuje - pokud ne "fuckoff" pokud ano pokračuj dále
-//Zobrazení z tabulky v db - rezervace míst již obsazená místa zakreslení do tabulky - kontrola v php
 ?>
 
 <!DOCTYPE html>
@@ -75,12 +79,35 @@ var_dump($unserialized_array); // gives back the array again
                 echo "<form method='post'><table class='table table-bordered'><br />";
 
                 for ($radek = 0; $radek < 5; $radek++) {
+                     
                     echo "<tr>";
                     for ($sloupec = 0; $sloupec < 5; $sloupec++) {
-                        echo "<td><input type='checkbox' name='mista[]' value='" . ($id_misto = $id_misto + 1) . "'> " . ($id_misto) . " </input></td>";
+                        echo "<td class='";
+                        foreach($json_pryc as $misto){
+                            if($misto-1 == $id_misto){
+                                if( $id_rezervujici == $_SESSION['id_uziv']){
+                                    echo "table-success";    
+                                }else{
+                                    echo "table-danger";    
+                                }
+                                                        
+                                                       
+                            }
+                        }
+                       
+                        echo "'><input type='checkbox' name='mista[]' value='" . ($id_misto = $id_misto + 1) . "'";
+                        foreach($json_pryc as $misto){
+                            if($misto == $id_misto){
+                               echo "disabled";                             
+                            }
+                        }                    
+                         echo ">".($id_misto)."</input></td>";                 
+                    }
+                        
                     }
                     echo "</tr>";
-                }
+                
+            
                 echo "</table>";
                 echo "<input type='submit' class='btn-primary' name='rezervovat' value='Rezervovat'/>";
                 echo "</form>";
@@ -88,6 +115,9 @@ var_dump($unserialized_array); // gives back the array again
                 
             
                 ?>
+                    <form method="post">
+                    <input type='submit' class='btn-primary' name='vypsat' value='Vypsat'/>
+                    </form>
                   <?php
                     if (!empty($chyby)) {
                         echo '<div class="error">' . $chyby . '</div>';
