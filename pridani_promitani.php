@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Založení nového filmu</title>
+  <title>Založení nového promítání</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -54,8 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $(document).ready(function() {
 
       $('#Datum').datepicker({
-        dateFormat: 'yy-mm-dd';
-        /*
+        //dateFormat: 'yy-mm-dd';
+        
           onSelect: function(datText, prom) {
               //Dostane dnešní datum - půlnoc (dnes)
               var dnes = new Date();
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   $('#Datum').val('');
                   $(prom).datepicker('show');
               }
-          }*/
+          }
       });
     });
   </script>

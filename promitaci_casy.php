@@ -38,6 +38,7 @@ if ($_SESSION['normal-prihlasen'] == 'ano' || $_SESSION['admin'] == 'ano' || $_S
                 <td><form action='rezervace.php' method='post/get'>
                 <input type='hidden' name='id_promitani' id='id_promitani' value='" . $data['id'] . "' />
                 <input type='hidden' name='cas_promitani' id='cas_promitani' value='" . $data['cas'] . "' />
+                <input type='hidden' name='datum_promitani' id='datum_promitani' value='" . $data['datum'] . "' />
                 <input type='submit' value='Vytvořit rezervaci'/>
                 </form></td>
               </tr>";
@@ -57,7 +58,6 @@ if ($_SESSION['normal-prihlasen'] == 'ano' || $_SESSION['admin'] == 'ano' || $_S
                 }
                 ?>
 
-                
                 <a href="vypsat_filmy.php">Zpět na filmy</a>
             </div>
         </div>
