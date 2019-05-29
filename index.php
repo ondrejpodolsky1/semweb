@@ -21,7 +21,7 @@ session_start();
     <!--
         Výchozí stránka s rozcestníkem
     -->
-    <div class="container" style="margin-top: 50px">
+    <div class="container" style="margin-top: 50px" align="center">
         <h1>
             VÍTEJTE<br>
         </h1>
