@@ -1,22 +1,25 @@
 <?php
-use function GuzzleHttp\json_decode;
-
 session_start();
 require 'db.php';
 
 if ($_SESSION['normal-prihlasen'] == 'ano' || $_SESSION['admin'] == 'ano' || $_SESSION['glogin'] == 'ano') {
     $sql = "SELECT * FROM rezervace WHERE id_uzivatel=" . $_SESSION['id_uziv']. "";
     $vypis = $db->query($sql);
+    
  } else {
     header('Location: prihlaseni.php');
     exit();
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $_SESSION['edit'] = $_POST['id_rezervace'];
     if (isset($_POST['Smazat'])) {
-        $sql = "DELETE FROM rezervace WHERE id='" . $_SESSION['smazani']. "'";
+        $sql = "DELETE FROM rezervace WHERE id='" . $_SESSION['edit']. "'";
         $proved = $db->query($sql);  
-
         header('Location: edit_rezervace.php');
+    }
+    if (isset($_POST['potvrdit'])) {
+        
+        header("Location: potvrzeni.php");
     }
     }
 ?>
@@ -42,19 +45,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <th>Čas představení</th>
                     <th>Místa</th></tr>";
                     while ($data = $vypis->fetch(PDO::FETCH_ASSOC)) {
-                       
+                        $mista=json_decode($data['mista']);
                         echo "<tr>
                 <td>" . $data['datum_promitani'] . "</td>
                 <td>" . $data['cas_promitani'] . "</td>
-                <td>" . $data['mista'] . "</td>
+                <td>";
+                        foreach($mista as $misto){
+                            echo $misto."\n";
+                        }
+                echo "</td>
                 <td><form action='edit_rezervace.php' method='post'>
                 <input type='hidden' name='id_rezervace' id='id_rezervace' value='" . $data['id'] . "' />
                 <input type='submit' name='Smazat' value='Smazat'/>
-                <input type='submit' value='Potvrdit'/>
+                
                 </form></td>
               </tr>";
-                $_SESSION['smazani'] = $data['id'];
+                //<input type='submit' name='potvrdit' value='Potvrdit'/>
                     }
+                   
                 } else {
                     echo "Nemáte žádnou rezervaci";
                 }
